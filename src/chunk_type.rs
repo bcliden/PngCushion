@@ -1,5 +1,3 @@
-use crate::Error;
-
 fn get_fifth_bit(byte: u8) -> u8 {
     (byte & 0b00100000) >> 5
 }
@@ -12,7 +10,7 @@ fn valid_PNG_bytes(bytes: [u8; 4]) -> bool {
 }
 
 #[derive(Debug, PartialEq, Eq, PartialOrd, Ord)]
-struct ChunkType {
+pub struct ChunkType {
     bytes: [u8; 4],
 }
 
@@ -46,7 +44,7 @@ impl ChunkType {
 }
 
 impl std::str::FromStr for ChunkType {
-    type Err = Error;
+    type Err = crate::Error;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         let bytes: [u8; 4] = s.as_bytes().try_into()?;
@@ -60,7 +58,7 @@ impl std::str::FromStr for ChunkType {
 }
 
 impl std::convert::TryFrom<[u8; 4]> for ChunkType {
-    type Error = Error;
+    type Error = crate::Error;
 
     fn try_from(value: [u8; 4]) -> Result<Self, Self::Error> {
         if !valid_PNG_bytes(value) {
