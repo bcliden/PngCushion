@@ -6,7 +6,7 @@ use crate::chunk_type::ChunkType;
 use crate::{Error, Result};
 
 #[derive(Debug)]
-struct Png {
+pub struct Png {
     // header: Png::STANDARD_HEADER,
     chunks: Vec<Chunk>,
 }
@@ -84,8 +84,15 @@ impl TryFrom<&[u8]> for Png {
 
 impl std::fmt::Display for Png {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{:?}", Png::STANDARD_HEADER)?;
-        write!(f, "{:?}", self.chunks)
+        writeln!(f, "PNG {{")?;
+        writeln!(f, "  Number of chunks: {}", self.chunks.len())?;
+        writeln!(f, "  Chunks: {{")?;
+        self.chunks.iter().for_each(|c| {
+            writeln!(f, "    {}", c).expect("failed to write to f");
+        });
+        writeln!(f, "    }}")?;
+        writeln!(f, "}}")?;
+        Ok(())
     }
 }
 

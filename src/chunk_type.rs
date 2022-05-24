@@ -3,10 +3,9 @@ fn get_fifth_bit(byte: u8) -> u8 {
 }
 
 fn valid_PNG_bytes(bytes: [u8; 4]) -> bool {
-    bytes.iter()
-    .all(|&b| {
-        b.is_ascii_lowercase() || b.is_ascii_uppercase()
-    })
+    bytes
+        .iter()
+        .all(|&b| b.is_ascii_lowercase() || b.is_ascii_uppercase())
 }
 
 #[derive(Debug, PartialEq, Eq, PartialOrd, Ord)]
@@ -49,11 +48,9 @@ impl std::str::FromStr for ChunkType {
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         let bytes: [u8; 4] = s.as_bytes().try_into()?;
         if !valid_PNG_bytes(bytes) {
-            return Err("Chunk Type could not be determined from string".into())
+            return Err("Chunk Type could not be determined from string".into());
         }
-        Ok(ChunkType {
-            bytes,
-        })
+        Ok(ChunkType { bytes })
     }
 }
 
@@ -62,7 +59,7 @@ impl std::convert::TryFrom<[u8; 4]> for ChunkType {
 
     fn try_from(value: [u8; 4]) -> Result<Self, Self::Error> {
         if !valid_PNG_bytes(value) {
-            return Err("invalid string".into())
+            return Err("invalid string".into());
         }
         Ok(ChunkType { bytes: value })
     }
@@ -70,7 +67,15 @@ impl std::convert::TryFrom<[u8; 4]> for ChunkType {
 
 impl std::fmt::Display for ChunkType {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{}", std::str::from_utf8(&self.bytes).unwrap_or("_err"))
+        write!(f, "ChunkType {{")?;
+        write!(
+            f,
+            "{:?}",
+            std::str::from_utf8(self.bytes.as_slice()).expect("Bytes couldn't be read as UTF-8")
+        )?;
+        write!(f, "}}")?;
+
+        Ok(())
     }
 }
 

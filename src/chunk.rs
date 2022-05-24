@@ -103,7 +103,13 @@ impl TryFrom<&[u8]> for Chunk {
 
 impl std::fmt::Display for Chunk {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{}", self.data_as_string().expect("data can't be coerced to string"))
+        write!(f, "Chunk {{")?;
+        write!(f, "  Length: {}", self.length)?;
+        write!(f, "  Chunk Type: {}", self.chunk_type)?;
+        write!(f, "  Data: {} bytes", self.data.len())?;
+        write!(f, "  CRC: {}", self.crc)?;
+        write!(f, " }}")?;
+        Ok(())
     }
 }
 
