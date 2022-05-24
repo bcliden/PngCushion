@@ -49,7 +49,7 @@ impl std::str::FromStr for ChunkType {
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         let bytes: [u8; 4] = s.as_bytes().try_into()?;
         if !valid_PNG_bytes(bytes) {
-            return Err("invalid string".into())
+            return Err("Chunk Type could not be determined from string".into())
         }
         Ok(ChunkType {
             bytes,

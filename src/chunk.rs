@@ -11,7 +11,7 @@ pub struct Chunk {
 }
 
 impl Chunk {
-    fn new(chunk_type: ChunkType, data: Vec<u8>) -> Chunk {
+    pub fn new(chunk_type: ChunkType, data: Vec<u8>) -> Chunk {
         let length = data.len() as u32;
         let crc = crc_checksum(&chunk_type, &data);
 
@@ -23,27 +23,27 @@ impl Chunk {
         }
     }
 
-    fn length(&self) -> u32 {
+    pub fn length(&self) -> u32 {
         self.length
     }
 
-    fn chunk_type(&self) -> &ChunkType {
+    pub fn chunk_type(&self) -> &ChunkType {
         &self.chunk_type
     }
 
-    fn data(&self) -> &[u8] {
+    pub fn data(&self) -> &[u8] {
         self.data.as_slice()
     }
 
-    fn crc(&self) -> u32 {
+    pub fn crc(&self) -> u32 {
         self.crc
     }
 
-    fn data_as_string(&self) -> crate::Result<String> {
+    pub fn data_as_string(&self) -> crate::Result<String> {
         String::from_utf8(self.data.clone()).map_err(|e| e.into())
     }
 
-    fn as_bytes(&self) -> Vec<u8> {
+    pub fn as_bytes(&self) -> Vec<u8> {
         self.length()
             .to_be_bytes()
             .iter()
