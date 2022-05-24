@@ -1,13 +1,8 @@
-use std::fmt::Display;
-use std::io::Read;
-
 use crate::chunk::Chunk;
-use crate::chunk_type::ChunkType;
-use crate::{Error, Result};
+use crate::Result;
 
 #[derive(Debug)]
 pub struct Png {
-    // header: Png::STANDARD_HEADER,
     chunks: Vec<Chunk>,
 }
 
@@ -90,7 +85,7 @@ impl std::fmt::Display for Png {
         self.chunks.iter().for_each(|c| {
             writeln!(f, "    {}", c).expect("failed to write to f");
         });
-        writeln!(f, "    }}")?;
+        writeln!(f, "  }}")?;
         writeln!(f, "}}")?;
         Ok(())
     }

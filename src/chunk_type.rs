@@ -67,14 +67,11 @@ impl std::convert::TryFrom<[u8; 4]> for ChunkType {
 
 impl std::fmt::Display for ChunkType {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "ChunkType {{")?;
         write!(
             f,
-            "{:?}",
+            "{}",
             std::str::from_utf8(self.bytes.as_slice()).expect("Bytes couldn't be read as UTF-8")
         )?;
-        write!(f, "}}")?;
-
         Ok(())
     }
 }

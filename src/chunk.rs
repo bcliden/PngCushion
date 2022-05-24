@@ -63,7 +63,7 @@ impl TryFrom<&[u8]> for Chunk {
             Some(v) => {
                 let arr: [u8; 4] = v.try_into()?;
                 u32::from_be_bytes(arr)
-            },
+            }
             None => return Err("no length".into()),
         };
 
@@ -78,14 +78,14 @@ impl TryFrom<&[u8]> for Chunk {
         let crc_idx = 8 + length as usize;
         let data: Vec<u8> = match value.get(8..crc_idx) {
             Some(v) => Vec::from(v),
-            None => return Err("No data".into())
+            None => return Err("No data".into()),
         };
-        let crc: u32 = match value.get(crc_idx..crc_idx+4) {
+        let crc: u32 = match value.get(crc_idx..crc_idx + 4) {
             Some(v) => {
                 let arr: [u8; 4] = v.try_into()?;
                 u32::from_be_bytes(arr)
-            },
-            None => return Err("No CRC".into())
+            }
+            None => return Err("No CRC".into()),
         };
 
         if crc_checksum(&chunk_type, &data) != crc {
@@ -96,20 +96,21 @@ impl TryFrom<&[u8]> for Chunk {
             length,
             chunk_type,
             data,
-            crc
+            crc,
         })
     }
 }
 
 impl std::fmt::Display for Chunk {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "Chunk {{")?;
-        write!(f, "  Length: {}", self.length)?;
-        write!(f, "  Chunk Type: {}", self.chunk_type)?;
-        write!(f, "  Data: {} bytes", self.data.len())?;
-        write!(f, "  CRC: {}", self.crc)?;
-        write!(f, " }}")?;
-        Ok(())
+        write!(
+            f,
+            "Chunk {{ length={:>10} | type={:<10} | data={:>10} bytes | CRC={:>10} }}",
+            self.length,
+            self.chunk_type,
+            self.data.len(),
+            self.crc
+        )
     }
 }
 
