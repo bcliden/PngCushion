@@ -105,7 +105,7 @@ impl std::fmt::Display for Chunk {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(
             f,
-            "Chunk {{ length={:>10} | type={:<10} | data={:>10} bytes | CRC={:>10} }}",
+            "Chunk {{ length= {:>10} bytes | type= {:<10} | data= {:>10} bytes | CRC= {:>10} }}",
             self.length,
             self.chunk_type,
             self.data.len(),

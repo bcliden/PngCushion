@@ -28,7 +28,7 @@ fn main() -> Result<()> {
     - pngme print ./dice.png
     */
 
-    match dbg!(cli).command {
+    match cli.command {
         PngCushionSubcommands::Encode(args) => {
             let f = fs::read(args.in_file.clone())?;
             let mut p = Png::try_from(f.as_slice())?;
